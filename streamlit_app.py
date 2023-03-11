@@ -51,26 +51,34 @@ def local_css(file_name):
 local_css("test.css")
 #TOKEN SPOTIFY 
 #region
-client_id = '5e7881c6e05440c0895cfa3c2a52fe37'
-client_secret = '50d6a378818745ff846018655d9aef4c'
+#TOKEN SPOTIFY 
+#region
+#client_id = '5e7881c6e05440c0895cfa3c2a52fe37'
+#client_secret = '50d6a378818745ff846018655d9aef4c'
 redirect_uri = 'http://localhost:8000/callback'
-username = 'your-spotify-username'
+#username = 'your-spotify-username'
 scope = ['user-top-read','user-read-recently-played','user-library-read']
 # Ottieni il token di accesso dell'utente
-auth_manager = SpotifyOAuth(client_id=client_id,
+#token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
+#sp = spotipy.Spotify(auth=token)
+from spotipy.oauth2 import SpotifyClientCredentials
+client_id = st.sidebar.text_input("Enter client ID:", "")
+client_secret = st.sidebar.text_input("Enter client secret:", type="password")
+if len(client_id) > 25 and len(client_secret) > 25 :
+    auth_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
+    access_token = auth_manager.get_access_token()
+    sp = spotipy.Spotify(auth=access_token)
+    st.write(access_token)
+    st.write(sp)
+    auth_manager = SpotifyOAuth(client_id=client_id,
                             client_secret=client_secret,
                             redirect_uri=redirect_uri,
-                            scope=scope,
-                            open_browser=False,
-                            cache_path=None)
-auth_url = auth_manager.get_authorize_url()
-st.write(f"Click [here]({auth_url}) to authorize the application.")
-code = st.text_input("Enter the code returned from the authorization page:")
-token_info = auth_manager.get_access_token(code)
-access_token = token_info['access_token']
-sp = spotipy.Spotify(auth=access_token)
-# esempio: ottieni i dati dell'utente corrente
-user_data = sp.current_user()
+                            scope=scope)
+    sp = spotipy.Spotify(auth_manager=auth_manager)
+
+# Esempio: ottenere i dati dell'utente corrente
+    user_data = sp.current_user()
+    st.write(user_data)
 
 #endregion
 
