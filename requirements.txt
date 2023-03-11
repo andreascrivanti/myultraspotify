@@ -11,3 +11,4 @@ streamlit_metrics
 matplotlib
 altair
 seaborn
+lyricsgenius
