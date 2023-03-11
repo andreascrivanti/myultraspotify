@@ -1,4 +1,4 @@
-spotipy = 2.22.1
+spotipy == 2.22.1
 time
 pandas
 streamlit
