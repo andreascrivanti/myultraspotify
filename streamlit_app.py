@@ -58,10 +58,10 @@ scope = ['user-top-read','user-read-recently-played','user-library-read']
 # Ottieni il token di accesso dell'utente
 from spotipy.oauth2 import SpotifyOAuth
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="YOUR_APP_CLIENT_ID",
-                                               client_secret="YOUR_APP_CLIENT_SECRET",
-                                               redirect_uri="YOUR_APP_REDIRECT_URI",
-                                               scope="user-library-read"))
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="client_id",
+                                               client_secret="client_secret",
+                                               redirect_uri="redirect_uri",
+                                               scope="scope"))
 
 #endregion
 
