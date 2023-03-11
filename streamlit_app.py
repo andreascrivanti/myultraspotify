@@ -1,10 +1,10 @@
 #LIBRERIE
 #region
 import spotipy
+import spotipy.util as util
 import pandas as pd
 import streamlit as st
 import numpy as np
-#from spotipy.oauth2 import SpotifyClientCredentials
 
 import songrecommendations
 import polarplot
