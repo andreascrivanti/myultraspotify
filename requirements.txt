@@ -1,4 +1,5 @@
 spotipy
+spotipy.util
 pandas
 streamlit
 numpy
