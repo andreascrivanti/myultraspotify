@@ -55,6 +55,7 @@ local_css("test.css")
 #region
 client_id = '5e7881c6e05440c0895cfa3c2a52fe37'
 client_secret = '50d6a378818745ff846018655d9aef4c'
+
 redirect_uri = 'http://localhost:8000/callback'
 #username = 'your-spotify-username'
 scope = ['user-top-read','user-read-recently-played','user-library-read']
@@ -74,9 +75,10 @@ if len(client_id) > 25 and len(client_secret) > 25 :
                             scope=scope)
     sp = spotipy.Spotify(auth_manager=auth_manager)
 
-    # Esempio: ottenere i dati dell'utente corrente
+# Esempio: ottenere i dati dell'utente corrente
     user_data = sp.current_user()
     st.write(user_data)
+#endregion
 
 #endregion
 
