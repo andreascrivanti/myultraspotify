@@ -74,9 +74,9 @@ if len(client_id) > 25 and len(client_secret) > 25 :
                             scope=scope)
     sp = spotipy.Spotify(auth_manager=auth_manager)
 
-# Esempio: ottenere i dati dell'utente corrente
-user_data = sp.current_user()
-st.write(user_data)
+    # Esempio: ottenere i dati dell'utente corrente
+    user_data = sp.current_user()
+    st.write(user_data)
 
 #endregion
 
