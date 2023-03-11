@@ -62,16 +62,17 @@ scope = ['user-top-read','user-read-recently-played','user-library-read']
 #token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
 #sp = spotipy.Spotify(auth=token)
 from spotipy.oauth2 import SpotifyClientCredentials
-auth_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
-access_token = auth_manager.get_access_token()
-sp = spotipy.Spotify(auth=access_token)
-st.write(access_token)
-st.write(sp)
-auth_manager = SpotifyOAuth(client_id=client_id,
-                        client_secret=client_secret,
-                        redirect_uri=redirect_uri,
-                        scope=scope)
-sp = spotipy.Spotify(auth_manager=auth_manager)
+if len(client_id) > 25 and len(client_secret) > 25 :
+    auth_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
+    access_token = auth_manager.get_access_token()
+    sp = spotipy.Spotify(auth=access_token)
+    st.write(access_token)
+    st.write(sp)
+    auth_manager = SpotifyOAuth(client_id=client_id,
+                            client_secret=client_secret,
+                            redirect_uri=redirect_uri,
+                            scope=scope)
+    sp = spotipy.Spotify(auth_manager=auth_manager)
 
 # Esempio: ottenere i dati dell'utente corrente
 user_data = sp.current_user()
