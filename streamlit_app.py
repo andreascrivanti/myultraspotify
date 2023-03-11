@@ -1,7 +1,5 @@
 #LIBRERIE
 #region
-import spotipy
-import spotipy.util as util
 import time
 import pandas as pd
 import streamlit as st
