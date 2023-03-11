@@ -5,6 +5,7 @@ import spotipy.util as util
 import pandas as pd
 import streamlit as st
 import numpy as np
+from spotipy.oauth2 import SpotifyOAuth
 
 import songrecommendations
 import polarplot
@@ -56,12 +57,20 @@ redirect_uri = 'http://localhost:8000/callback'
 username = 'your-spotify-username'
 scope = ['user-top-read','user-read-recently-played','user-library-read']
 # Ottieni il token di accesso dell'utente
-from spotipy.oauth2 import SpotifyOAuth
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="client_id",
-                                               client_secret="client_secret",
-                                               redirect_uri="redirect_uri",
-                                               scope="scope"))
+auth_manager = SpotifyOAuth(client_id=client_id,
+                            client_secret=client_secret,
+                            redirect_uri=redirect_uri,
+                            scope=scope,
+                            open_browser=False,
+                            cache_path=None)
+auth_url = auth_manager.get_authorize_url()
+st.write(f"Click [here]({auth_url}) to authorize the application.")
+code = st.text_input("Enter the code returned from the authorization page:")
+token_info = auth_manager.get_access_token(code)
+access_token = token_info['access_token']
+sp = spotipy.Spotify(auth=access_token)
+# esempio: ottieni i dati dell'utente corrente
+user_data = sp.current_user()
 
 #endregion
 
