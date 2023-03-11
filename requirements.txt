@@ -1,5 +1,4 @@
 spotipy
-SpotifyOAuth
 pandas
 streamlit
 numpy
