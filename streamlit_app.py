@@ -50,35 +50,6 @@ def local_css(file_name):
 
 local_css("test.css")
 #TOKEN SPOTIFY 
-#region
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
-
-# Everything is accessible via the st.secrets dict:
-
-st.write("DB username:", st.secrets["SPOTIPY_CLIENT_ID"])
-st.write("DB password:", st.secrets["SPOTIPY_CLIENT_SECRET"])
-st.write("DB URI:", st.secrets["SPOTIPY_REDIRECT_URI"])
-
-# And the root-level secrets are also accessible as environment variables:
-
-import os
-
-st.write(
-    "Has environment variables been set:",
-    os.environ["SPOTIPY_CLIENT_ID"] == st.secrets["SPOTIPY_CLIENT_ID"],
-)
-
-client_id = os.environ['SPOTIPY_CLIENT_ID']
-client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
-scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
-
-results = sp.current_user_saved_tracks()
-for idx, item in enumerate(results['items']):
-    track = item['track']
-    print(idx, track['artists'][0]['name'], " – ", track['name'])
 
 client_id = '5e7881c6e05440c0895cfa3c2a52fe37'
 client_secret = '50d6a378818745ff846018655d9aef4c'
@@ -143,6 +114,40 @@ if selected == 'Home':
         else:
             pass
 #endregion
+
+
+
+######################################################################################################
+#region
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+
+# Everything is accessible via the st.secrets dict:
+
+st.write("DB username:", st.secrets["SPOTIPY_CLIENT_ID"])
+st.write("DB password:", st.secrets["SPOTIPY_CLIENT_SECRET"])
+st.write("DB URI:", st.secrets["SPOTIPY_REDIRECT_URI"])
+
+# And the root-level secrets are also accessible as environment variables:
+
+import os
+
+st.write(
+    "Has environment variables been set:",
+    os.environ["SPOTIPY_CLIENT_ID"] == st.secrets["SPOTIPY_CLIENT_ID"],
+)
+
+client_id = os.environ['SPOTIPY_CLIENT_ID']
+client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
+scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+
+results = sp.current_user_saved_tracks()
+for idx, item in enumerate(results['items']):
+    track = item['track']
+    print(idx, track['artists'][0]['name'], " – ", track['name'])
+
 ######################################################################################################
 
 #MY TRACKS 
