@@ -58,6 +58,7 @@ from spotipy.oauth2 import SpotifyOAuth
 
 st.write("DB username:", st.secrets["SPOTIPY_CLIENT_ID"])
 st.write("DB password:", st.secrets["SPOTIPY_CLIENT_SECRET"])
+st.write("DB URI:", st.secrets["SPOTIPY_REDIRECT_URI"])
 
 # And the root-level secrets are also accessible as environment variables:
 
@@ -68,11 +69,11 @@ st.write(
     os.environ["SPOTIPY_CLIENT_ID"] == st.secrets["SPOTIPY_CLIENT_ID"],
 )
 
-
-
+client_id = os.environ['SPOTIPY_CLIENT_ID']
+client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
 scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id, client_secret=client_secret, scope=scope))
 
 results = sp.current_user_saved_tracks()
 for idx, item in enumerate(results['items']):
