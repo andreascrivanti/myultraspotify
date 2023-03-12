@@ -51,18 +51,20 @@ def local_css(file_name):
 local_css("test.css")
 #TOKEN SPOTIFY 
 #region
-#TOKEN SPOTIFY 
-#region
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+
+scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+
+results = sp.current_user_saved_tracks()
+for idx, item in enumerate(results['items']):
+    track = item['track']
+    print(idx, track['artists'][0]['name'], " – ", track['name'])
+
 client_id = '5e7881c6e05440c0895cfa3c2a52fe37'
 client_secret = '50d6a378818745ff846018655d9aef4c'
-
-redirect_uri = 'http://localhost:8000/callback'
-#username = 'your-spotify-username'
-scope = ['user-top-read','user-read-recently-played','user-library-read']
-# Ottieni il token di accesso dell'utente
-#token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
-#sp = spotipy.Spotify(auth=token)
-
 #endregion
 
 ######################################################################################################
@@ -115,9 +117,7 @@ if selected == 'Home':
     # Non fare nulla se il bottone non viene cliccato
             pass
         else:
-            scope = 'user-top-read'
-            token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
-            sp = spotipy.Spotify(auth=token)
+            sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
     with col2:
         if st.button("Log out to Spotify"):
         # Non fare nulla se il bottone non viene cliccato
@@ -126,22 +126,6 @@ if selected == 'Home':
         else:
             pass
 #endregion
-from spotipy.oauth2 import SpotifyClientCredentials
-if len(client_id) > 25 and len(client_secret) > 25 :
-    auth_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
-    access_token = auth_manager.get_access_token()
-    sp = spotipy.Spotify(auth=access_token)
-    st.write(access_token)
-    st.write(sp)
-    auth_manager = SpotifyOAuth(client_id=client_id,
-                            client_secret=client_secret,
-                            redirect_uri=redirect_uri,
-                            scope=scope)
-    sp = spotipy.Spotify(auth_manager=auth_manager)
-
-# Esempio: ottenere i dati dell'utente corrente
-    user_data = sp.current_user()
-    st.write(user_data)
 ######################################################################################################
 
 #MY TRACKS 
