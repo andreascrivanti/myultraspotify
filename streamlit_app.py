@@ -73,7 +73,7 @@ client_id = os.environ['SPOTIPY_CLIENT_ID']
 client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
 scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id, client_secret=client_secret, scope=scope))
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
 results = sp.current_user_saved_tracks()
 for idx, item in enumerate(results['items']):
