@@ -54,6 +54,22 @@ local_css("test.css")
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
+# Everything is accessible via the st.secrets dict:
+
+st.write("DB username:", st.secrets["SPOTIPY_CLIENT_ID"])
+st.write("DB password:", st.secrets["SPOTIPY_CLIENT_SECRET"])
+
+# And the root-level secrets are also accessible as environment variables:
+
+import os
+
+st.write(
+    "Has environment variables been set:",
+    os.environ["SPOTIPY_CLIENT_ID"] == st.secrets["SPOTIPY_CLIENT_ID"],
+)
+
+
+
 scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
