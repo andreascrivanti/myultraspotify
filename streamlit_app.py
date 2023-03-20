@@ -98,8 +98,6 @@ with st.sidebar:
 
 #HOME 
 #region
-def callback():
-    st.write("ok")
 
 if selected == 'Home':
     col1, col2 = st.columns(2)
