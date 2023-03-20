@@ -105,6 +105,10 @@ if selected == 'Home':
     # Non fare nulla se il bottone non viene cliccato
             pass
         else:
+            client_id = os.environ['SPOTIPY_CLIENT_ID']
+            client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
+            scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
+
             sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
     with col2:
         if st.button("Log out to Spotify"):
