@@ -53,7 +53,180 @@ local_css("test.css")
 #TOKEN SPOTIFY 
 
 #endregion
+def get_token(oauth, code):
 
+    token = oauth.get_access_token(code, as_dict=False, check_cache=False)
+    # remove cached token saved in directory
+    os.remove(".cache")
+    
+    # return the token
+    return token
+
+
+
+def sign_in(token):
+    sp = spotipy.Spotify(auth=token)
+    return sp
+
+
+
+def get_correct_limit(stop, start):
+    '''
+    All credit to https://github.com/irenechang1510 for this function idea.
+    '''    
+    
+    # start at 50 and move backwards until correct timestamp is found
+    # re run the API call until 'before' is greater than the stop timestamp
+    limit = 50
+    while limit > 0:
+        obj = sp.current_user_recently_played(before=start, limit=limit)
+        mark = int(obj['cursors']['before'])
+        
+        # get the track played right after the stop timestamp
+        if mark > stop:
+            break
+        # otherwise, decrease the limit by 1 and try again
+        limit -= 1
+    
+    return limit
+
+
+### in the end, this endpoint is simply broken
+### cannot do anything until Spotify fixes it
+def get_recents_all(since):
+    
+    # for some reason, you have to move backwards instead of forward
+    # the after header seems pointless because it still starts at current time
+    # but the next() method returns a results object with no 'next' dict element?
+    
+    now = int(time.mktime(dt.datetime.now().timetuple())) * 1000
+    start = now
+    
+    tracks = []
+    while (start > since):
+        results = sp.current_user_recently_played(before=start, limit=50)
+        try:
+            next_stop = int(results["cursors"]["before"])
+        except:
+            next_stop = since
+        # eventually, the next stop will move past the desired since timestamp
+        if next_stop < since:
+            last_limit = get_correct_limit(since, start)
+            if last_limit != 0:
+                results = sp.current_user_recently_played(before=start,
+                                                          limit=last_limit)
+            else:
+                break
+        tracks.extend(results["items"])
+        start = next_stop
+    return tracks
+
+
+
+def get_playlists_all(username):
+    results = sp.user_playlists(username)
+    playlists = results["items"]
+    while results["next"]:
+        results = sp.next(results)
+        playlists.extend(results["items"])
+    return playlists
+
+
+
+def get_tracks_all(username, playlist_id):
+    results = sp.user_playlist_tracks(username, playlist_id)
+    tracks = results["items"]
+    while results["next"]:
+        results = sp.next(results)
+        tracks.extend(results["items"])
+    return tracks
+
+# %% app func definitions
+
+def app_get_token():
+    try:
+        token = get_token(st.session_state["oauth"], st.session_state["code"])
+    except Exception as e:
+        st.error("An error occurred during token retrieval!")
+        st.write("The error is as follows:")
+        st.write(e)
+    else:
+        st.session_state["cached_token"] = token
+
+
+
+def app_sign_in():
+    try:
+        sp = sign_in(st.session_state["cached_token"])
+    except Exception as e:
+        st.error("An error occurred during sign-in!")
+        st.write("The error is as follows:")
+        st.write(e)
+    else:
+        st.session_state["signed_in"] = True
+        app_display_welcome()
+        st.success("Sign in success!")
+        
+    return sp
+
+
+
+def app_display_welcome():
+    
+    # import secrets from streamlit deployment
+    cid = st.secrets["SPOTIPY_CLIENT_ID"]
+    csecret = st.secrets["SPOTIPY_CLIENT_SECRET"]
+    uri = st.secrets["SPOTIPY_REDIRECT_URI"]
+
+    # set scope and establish connection
+    scopes = " ".join(["user-read-private",
+                       "playlist-read-private",
+                       "playlist-modify-private",
+                       "playlist-modify-public",
+                       "user-read-recently-played"])
+
+    # create oauth object
+    oauth = SpotifyOAuth(scope=scopes,
+                         redirect_uri=uri,
+                         client_id=cid,
+                         client_secret=csecret)
+    # store oauth in session
+    st.session_state["oauth"] = oauth
+
+    # retrieve auth url
+    auth_url = oauth.get_authorize_url()
+    
+    # this SHOULD open the link in the same tab when Streamlit Cloud is updated
+    # via the "_self" target
+    link_html = " <a target=\"_self\" href=\"{url}\" >{msg}</a> ".format(
+        url=auth_url,
+        msg="Click me to authenticate!"
+    )
+    
+    # define welcome
+    welcome_msg = """
+    Welcome! :wave: This app uses the Spotify API to interact with general 
+    music info and your playlists! In order to view and modify information 
+    associated with your account, you must log in. You only need to do this 
+    once.
+    """
+    
+    # define temporary note
+    note_temp = """
+    _Note: Unfortunately, the current version of Streamlit will not allow for
+    staying on the same page, so the authorization and redirection will open in a 
+    new tab. This has already been addressed in a development release, so it should
+    be implemented in Streamlit Cloud soon!_
+    """
+
+    st.title("Spotify Playlist Preserver")
+
+    if not st.session_state["signed_in"]:
+        st.markdown(welcome_msg)
+        st.write(" ".join(["No tokens found for this session. Please log in by",
+                          "clicking the link below."]))
+        st.markdown(link_html, unsafe_allow_html=True)
+        st.markdown(note_temp)
 ######################################################################################################
 
 #CARATTERISTICHE CANZONI 
