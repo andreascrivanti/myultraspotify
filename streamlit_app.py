@@ -51,49 +51,7 @@ def local_css(file_name):
 
 local_css("test.css")
 #TOKEN SPOTIFY 
-import json
-import requests
-from urllib.parse import urlencode
-import base64
-import webbrowser
-import os
-from requests import post
 
-client_id = os.environ['SPOTIPY_CLIENT_ID']
-client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
-
-def get_token():
-    auth_string = client_id + ':' + client_secret
-    auth_bytes = auth_string.encode("utf-8")
-    auth_base64 = str(base64.b64encode(auth_bytes), "utf-8")
-
-    url = "https://accounts.spotify.com/api/token"
-    headers  = {
-        "Authorization": "Basic " + auth_base64,
-        "Content-Type": "application/x-www-form-urlencoded"
-    }
-    data = {"grant_type":"client_credentials"}
-    result = post(url, headers=headers, data=data)
-    json_result = json.loads(result.content)
-    token = json_result["access_token"]
-    return token
-
-def get_auth_header(token):
-    return{"Authorization":"Bearer " + token}
-
-token = get_token()
-st.write(token)
-sp = spotipy.Spotify(auth=token)
-time_range_labels = {
-            '1 mese': 'short_term',
-            '6 mesi': 'medium_term',
-            'sempre': 'long_term'
-        }
-        # ordina i brani in base alla selezione dell'utente
-time_range = time_range_labels['1 mese']
-top_tracks = sp.current_user_top_tracks(limit=32, offset=0, time_range=time_range)
-st.write(top_tracks)
-#endregion
     
 ######################################################################################################
 
