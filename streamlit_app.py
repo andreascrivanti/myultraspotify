@@ -37,6 +37,8 @@ from datetime import datetime
 import funzioni
 
 import altair as alt
+
+
 #endregion
 
 
@@ -109,8 +111,8 @@ if selected == 'Home':
             client_id = os.environ['SPOTIPY_CLIENT_ID']
             client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
             scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
-
-            sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+            client_credentials_manager = SpotifyClientCredentials()
+            sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
     with col2:
         if st.button("Log out to Spotify"):
         # Non fare nulla se il bottone non viene cliccato
@@ -145,8 +147,8 @@ st.write(
 client_id = os.environ['SPOTIPY_CLIENT_ID']
 client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
 scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
-
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+client_credentials_manager = SpotifyClientCredentials()
+sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 results = sp.current_user_saved_tracks()
 for idx, item in enumerate(results['items']):
