@@ -38,7 +38,6 @@ import funzioni
 
 import altair as alt
 
-from spotipy.oauth2 import SpotifyClientCredentials
 #endregion
 
 
@@ -53,8 +52,6 @@ def local_css(file_name):
 local_css("test.css")
 #TOKEN SPOTIFY 
 
-client_id = '5e7881c6e05440c0895cfa3c2a52fe37'
-client_secret = '50d6a378818745ff846018655d9aef4c'
 #endregion
 
 ######################################################################################################
