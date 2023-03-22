@@ -83,6 +83,16 @@ def get_auth_header(token):
 
 token = get_token()
 st.write(token)
+sp = spotipy.Spotify(auth=token)
+time_range_labels = {
+            '1 mese': 'short_term',
+            '6 mesi': 'medium_term',
+            'sempre': 'long_term'
+        }
+        # ordina i brani in base alla selezione dell'utente
+time_range = time_range_labels['1 mese']
+top_tracks = sp.current_user_top_tracks(limit=32, offset=0, time_range=time_range)
+st.write(top_tracks)
 #endregion
     
 ######################################################################################################
