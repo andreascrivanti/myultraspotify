@@ -38,7 +38,7 @@ import funzioni
 
 import altair as alt
 
-
+from spotipy.oauth2 import SpotifyClientCredentials
 #endregion
 
 
