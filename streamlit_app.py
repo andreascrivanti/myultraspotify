@@ -227,6 +227,86 @@ def app_display_welcome():
                           "clicking the link below."]))
         st.markdown(link_html, unsafe_allow_html=True)
         st.markdown(note_temp)
+def app_remove_recent(username):
+    nm_playlist = st.session_state["pl_selected"]
+    since_date = st.session_state["since_date"]
+    since_time = st.session_state["since_time"]
+    nm_playlist_new = st.session_state["new_name"]
+    shuffle = st.session_state["shuffle"]
+    
+    # get playlist id of selected playlist
+    playlists = get_playlists_all(username)
+    playlist_names = [x["name"] for x in playlists]
+    playlist_ids = [x["id"] for x in playlists]
+    pl_index = playlist_names.index(nm_playlist)
+    pl_selected_id = playlist_ids[pl_index]
+    
+    # get playlist tracks of selected playlist
+    pl_tracks = get_tracks_all(username, pl_selected_id)
+    pl_ids = [x["track"]["id"] for x in pl_tracks]
+    
+    # get listening history
+    # combine date inputs to datetime object
+    since_combined = dt.datetime.combine(since_date, since_time)
+    # needs to be in milliseconds
+    since_unix = int(time.mktime(since_combined.timetuple()))*1000
+    recent_tracks = get_recents_all(since_unix)
+    recent_ids = [x["track"]["id"] for x in recent_tracks]
+    
+    # create new playlist, info of playlist returned
+    new_pl = sp.user_playlist_create(user=username, name=nm_playlist_new)
+    # need to get id of new playlist
+    new_pl_id = new_pl["id"]
+    
+    # remove recently played from selected playlist
+    new_tracks = [x for x in pl_ids if x not in recent_ids]
+    
+    # shuffle if desired
+    if shuffle:
+        random.shuffle(new_tracks)
+    
+    # add tracks to new playlist!
+    # can only write 100 at a time to the spotify API
+    chunk_size = 100
+    for i in range(0, len(new_tracks), chunk_size):
+        chunk = new_tracks[i:i+chunk_size]
+        sp.user_playlist_add_tracks(user=username,
+                                    playlist_id=new_pl_id, 
+                                    tracks=chunk)
+        
+    # gotta do a celly
+    st.success("New playlist created! Check your Spotify App")
+    st.balloons()
+   
+# %% app session variable initialization
+
+if "signed_in" not in st.session_state:
+    st.session_state["signed_in"] = False
+if "cached_token" not in st.session_state:
+    st.session_state["cached_token"] = ""
+if "code" not in st.session_state:
+    st.session_state["code"] = ""
+if "oauth" not in st.session_state:
+    st.session_state["oauth"] = None
+
+# %% authenticate with response stored in url
+
+# get current url (stored as dict)
+url_params = st.experimental_get_query_params()
+
+# attempt sign in with cached token
+if st.session_state["cached_token"] != "":
+    sp = app_sign_in()
+# if no token, but code in url, get code, parse token, and sign in
+elif "code" in url_params:
+    # all params stored as lists, see doc for explanation
+    st.session_state["code"] = url_params["code"][0]
+    app_get_token()
+    sp = app_sign_in()
+# otherwise, prompt for redirect
+else:
+    app_display_welcome()
+    
 ######################################################################################################
 
 #CARATTERISTICHE CANZONI 
@@ -295,34 +375,7 @@ if selected == 'Home':
 
 
 ######################################################################################################
-#region
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
 
-# Everything is accessible via the st.secrets dict:
-
-st.write("DB username:", st.secrets["SPOTIPY_CLIENT_ID"])
-st.write("DB password:", st.secrets["SPOTIPY_CLIENT_SECRET"])
-st.write("DB URI:", st.secrets["SPOTIPY_REDIRECT_URI"])
-
-# And the root-level secrets are also accessible as environment variables:
-
-import os
-
-st.write(
-    "Has environment variables been set:",
-    os.environ["SPOTIPY_CLIENT_ID"] == st.secrets["SPOTIPY_CLIENT_ID"],
-)
-
-client_id = os.environ['SPOTIPY_CLIENT_ID']
-client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
-scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
-results = sp.current_user_saved_tracks()
-for idx, item in enumerate(results['items']):
-    track = item['track']
-    print(idx, track['artists'][0]['name'], " – ", track['name'])
-#endregion
 ######################################################################################################
 
 #MY TRACKS 
