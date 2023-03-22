@@ -56,7 +56,6 @@ import requests
 from urllib.parse import urlencode
 import base64
 import webbrowser
-from dotenv import load_dotenv
 import os
 from requests import post
 
