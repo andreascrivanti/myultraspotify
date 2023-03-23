@@ -110,6 +110,11 @@ if selected == 'Home':
     sp.trace = True
     user = sp.user(username)
     st.write(user)
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth())
+    playlists = sp.user_playlists(username)
+
+    for playlist in playlists['items']:
+        print(playlist['name'])
 
     #col1, col2 = st.columns(2)
     #with col1:
