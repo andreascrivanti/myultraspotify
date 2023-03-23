@@ -103,7 +103,8 @@ if selected == 'Home':
   import spotipy.util as util
 
   scope = 'user-library-read'
-
+  
+  st.write("inside home")
   if len(sys.argv) > 1:
       username = sys.argv[1]
   else:
@@ -111,7 +112,8 @@ if selected == 'Home':
       sys.exit()
 
   token = util.prompt_for_user_token(username, scope)
-
+  st.write(token)
+  
   if token:
       sp = spotipy.Spotify(auth=token)
       results = sp.current_user_saved_tracks()
