@@ -100,7 +100,7 @@ with st.sidebar:
 if selected == 'Home':
 
     if len(sys.argv) > 1:
-    username = sys.argv[1]
+        username = sys.argv[1]
     else:
         username = 'plamere'
 
