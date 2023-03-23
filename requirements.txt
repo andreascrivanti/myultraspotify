@@ -13,5 +13,4 @@ altair
 seaborn
 lyricsgenius
 pyarrow==8.0.0
-argparse
-logging
+
