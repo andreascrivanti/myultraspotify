@@ -103,7 +103,7 @@ if selected == 'Home':
     if len(sys.argv) > 1:
         username = sys.argv[1]
     else:
-        username = 'plamere'
+        username = st.text_input()
 
     client_credentials_manager = SpotifyClientCredentials()
     sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
