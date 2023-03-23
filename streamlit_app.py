@@ -99,19 +99,29 @@ with st.sidebar:
 
 if selected == 'Home':
 
+    client_id = '5e7881c6e05440c0895cfa3c2a52fe37'
+    client_secret = '50d6a378818745ff846018655d9aef4c'
+    redirect_uri = 'http://localhost:8000/callback'
+    username = 'your-spotify-username'
+    scope = ['user-top-read','user-read-recently-played','user-library-read']
+
     if len(sys.argv) > 1:
         username = sys.argv[1]
     else:
-        st.write("Whoops, need a username!")
-        st.write("usage: python user_playlists.py [username]")
+        print "Usage: %s username" % (sys.argv[0],)
         sys.exit()
 
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth())
+    token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
 
-    playlists = sp.user_playlists(username)
+    if token:
+        sp = spotipy.Spotify(auth=token)
+        results = sp.current_user_saved_tracks()
+        for item in results['items']:
+            track = item['track']
+            print track['name'] + ' - ' + track['artists'][0]['name']
+    else:
+        print "Can't get token for", username
 
-    for playlist in playlists['items']:
-        st.write(playlist['name'])
     #col1, col2 = st.columns(2)
     #with col1:
         #if not st.button("Log in to Spotify"):
