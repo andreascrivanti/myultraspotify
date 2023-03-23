@@ -98,13 +98,20 @@ with st.sidebar:
 #region
 
 if selected == 'Home':
-    from spotipy.oauth2 import SpotifyClientCredentials
-    client_credentials_manager = SpotifyClientCredentials()
-    sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-    st.write(sp)
-    search_str = 'Muse'
-    result = sp.search(search_str)
-    st.write(result)
+
+    if len(sys.argv) > 1:
+        username = sys.argv[1]
+    else:
+        print("Whoops, need a username!")
+        print("usage: python user_playlists.py [username]")
+        sys.exit()
+
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth())
+
+    playlists = sp.user_playlists(username)
+
+    for playlist in playlists['items']:
+        st.write(playlist['name'])
     #col1, col2 = st.columns(2)
     #with col1:
         #if not st.button("Log in to Spotify"):
