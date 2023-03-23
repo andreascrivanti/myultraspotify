@@ -102,6 +102,9 @@ if selected == 'Home':
     client_credentials_manager = SpotifyClientCredentials()
     sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
     st.write(sp)
+    search_str = 'Muse'
+    result = sp.search(search_str)
+    st.write(result)
     #col1, col2 = st.columns(2)
     #with col1:
         #if not st.button("Log in to Spotify"):
