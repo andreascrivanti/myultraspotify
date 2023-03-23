@@ -144,7 +144,7 @@ if token:
     results = sp.current_user_saved_tracks()
     for item in results['items']:
         track = item['track']
-        print(track['name'] + ' - ' + track['arti
+        st.write(track['name'] + ' - ' + track['artist'])
 
 
 # Everything is accessible via the st.secrets dict:
