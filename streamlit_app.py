@@ -105,8 +105,8 @@ if selected == 'Home':
     else:
         username = st.text_input("Inserisci del testo qui")
 
-    scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope, open_browser=True))
+    client_credentials_manager = SpotifyClientCredentials()
+    sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
     sp.trace = True
     user = sp.user(username)
     st.write(user)
