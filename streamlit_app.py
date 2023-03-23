@@ -111,11 +111,11 @@ if selected == 'Home':
   scope = ['user-top-read','user-read-recently-played','user-library-read']
   # Ottieni il token di accesso dell'utente
   token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
-      sp = spotipy.Spotify(auth=token)
-      results = sp.current_user_saved_tracks()
-      for item in results['items']:
-          track = item['track']
-          st.write(track['name'] + ' - ' + track['artist'])
+  sp = spotipy.Spotify(auth=token)
+  results = sp.current_user_saved_tracks()
+  for item in results['items']:
+      track = item['track']
+      st.write(track['name'] + ' - ' + track['artist'])
     #col1, col2 = st.columns(2)
     #with col1:
         #if not st.button("Log in to Spotify"):
