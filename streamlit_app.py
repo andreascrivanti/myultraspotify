@@ -98,6 +98,7 @@ with st.sidebar:
 #region
 
 if selected == 'Home':
+    from spotipy.oauth2 import SpotifyClientCredentials
 
     if len(sys.argv) > 1:
         username = sys.argv[1]
