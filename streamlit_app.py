@@ -124,7 +124,6 @@ with st.sidebar:
 #region
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from __future__ import print_function
 import sys
 import spotipy
 import spotipy.util as util
