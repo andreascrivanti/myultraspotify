@@ -102,8 +102,8 @@ if selected == 'Home':
     if len(sys.argv) > 1:
         username = sys.argv[1]
     else:
-        print("Whoops, need a username!")
-        print("usage: python user_playlists.py [username]")
+        st.write("Whoops, need a username!")
+        st.write("usage: python user_playlists.py [username]")
         sys.exit()
 
     sp = spotipy.Spotify(auth_manager=SpotifyOAuth())
