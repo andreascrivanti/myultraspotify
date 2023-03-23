@@ -99,23 +99,12 @@ with st.sidebar:
 
 if selected == 'Home':
 
-    client_id = '5e7881c6e05440c0895cfa3c2a52fe37'
-    client_secret = '50d6a378818745ff846018655d9aef4c'
-    redirect_uri = 'http://localhost:8000/callback'
-    username = 'your-spotify-username'
-    scope = ['user-top-read','user-read-recently-played','user-library-read']
+    scope = 'playlist-read-private'
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 
-
-    token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
-
-    if token:
-        sp = spotipy.Spotify(auth=token)
-        results = sp.current_user_saved_tracks()
-        for item in results['items']:
-            track = item['track']
-            st.write(track['name'] + ' - ' + track['artists'][0]['name'])
-    else:
-        st.write("Can't get token for", username)
+    results = sp.current_user_playlists(limit=50)
+    for i, item in enumerate(results['items']):
+        print("%d %s" % (i, item['name']))
 
     #col1, col2 = st.columns(2)
     #with col1:
