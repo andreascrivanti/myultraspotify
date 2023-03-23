@@ -99,12 +99,16 @@ with st.sidebar:
 
 if selected == 'Home':
 
-    scope = 'playlist-read-private'
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+    if len(sys.argv) > 1:
+    username = sys.argv[1]
+    else:
+        username = 'plamere'
 
-    results = sp.current_user_playlists(limit=50)
-    for i, item in enumerate(results['items']):
-        print("%d %s" % (i, item['name']))
+    client_credentials_manager = SpotifyClientCredentials()
+    sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+    sp.trace = True
+    user = sp.user(username)
+    st.write(user)
 
     #col1, col2 = st.columns(2)
     #with col1:
