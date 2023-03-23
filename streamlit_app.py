@@ -110,7 +110,9 @@ if selected == 'Home':
   else:
       print("Usage: %s username" % (sys.argv[0],))
       sys.exit()
-
+  
+  st.write(username)
+  st.write(scope)
   token = util.prompt_for_user_token(username, scope)
   st.write(token)
   
