@@ -103,7 +103,10 @@ if selected == 'Home':
   import spotipy.util as util
 
   scope = 'user-library-read'
-  
+  import webbrowser
+
+  webbrowser.open("https://google.com")
+
   st.write("inside home")
   if len(sys.argv) > 1:
       username = sys.argv[1]
