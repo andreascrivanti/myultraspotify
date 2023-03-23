@@ -37,7 +37,10 @@ from datetime import datetime
 import funzioni
 
 import altair as alt
-
+import webbrowser
+import sys
+import spotipy
+import spotipy.util as util
 #endregion
 
 
@@ -98,12 +101,9 @@ with st.sidebar:
 #region
 
 if selected == 'Home':
-  import sys
-  import spotipy
-  import spotipy.util as util
+
 
   scope = 'user-library-read'
-  import webbrowser
 
   webbrowser.open("https://google.com")
 
