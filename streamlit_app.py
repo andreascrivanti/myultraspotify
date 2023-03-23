@@ -111,6 +111,14 @@ if selected == 'Home':
     user = sp.user(username)
     st.write(user)
     
+    import argparse
+    import logging
+    logger = logging.getLogger('examples.change_playlist_details')
+    logging.basicConfig(level='DEBUG')
+    
+    st.write(logger)
+    scope = 'playlist-modify-public playlist-modify-private'
+    
     #col1, col2 = st.columns(2)
     #with col1:
         #if not st.button("Log in to Spotify"):
