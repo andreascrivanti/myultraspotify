@@ -22,7 +22,6 @@ import os
 import sys
 import signal
 import threading
-import webbrowser
 
 from PIL import Image
 import requests
@@ -37,9 +36,7 @@ from datetime import datetime
 import funzioni
 
 import altair as alt
-import webbrowser
 import sys
-import spotipy
 import spotipy.util as util
 #endregion
 
@@ -103,22 +100,17 @@ with st.sidebar:
 if selected == 'Home':
 
 
-  scope = 'user-library-read'
+  #scope = 'user-library-read'
 
-  webbrowser.open("https://google.com")
 
   st.write("inside home")
-  if len(sys.argv) > 1:
-      username = sys.argv[1]
-  else:
-      st.write("Usage: %s username" % (sys.argv[0],))
-  
-  st.write(username)
-  st.write(scope)
-  token = util.prompt_for_user_token(username, scope)
-  st.write(token)
-  
-  if token:
+  client_id = '5e7881c6e05440c0895cfa3c2a52fe37'
+  client_secret = '50d6a378818745ff846018655d9aef4c'
+  redirect_uri = 'http://localhost:8000/callback'
+  username = 'your-spotify-username'
+  scope = ['user-top-read','user-read-recently-played','user-library-read']
+  # Ottieni il token di accesso dell'utente
+  token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
       sp = spotipy.Spotify(auth=token)
       results = sp.current_user_saved_tracks()
       for item in results['items']:
