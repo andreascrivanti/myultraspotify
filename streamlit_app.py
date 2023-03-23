@@ -105,11 +105,6 @@ if selected == 'Home':
     username = 'your-spotify-username'
     scope = ['user-top-read','user-read-recently-played','user-library-read']
 
-    if len(sys.argv) > 1:
-        username = sys.argv[1]
-    else:
-        st.write("Usage: %s username" % (sys.argv[0],))
-        sys.exit()
 
     token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
 
