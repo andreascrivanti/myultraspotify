@@ -108,7 +108,7 @@ if selected == 'Home':
     if len(sys.argv) > 1:
         username = sys.argv[1]
     else:
-        print "Usage: %s username" % (sys.argv[0],)
+        st.write("Usage: %s username" % (sys.argv[0],))
         sys.exit()
 
     token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
@@ -118,9 +118,9 @@ if selected == 'Home':
         results = sp.current_user_saved_tracks()
         for item in results['items']:
             track = item['track']
-            print track['name'] + ' - ' + track['artists'][0]['name']
+            st.write(track['name'] + ' - ' + track['artists'][0]['name'])
     else:
-        print "Can't get token for", username
+        st.write("Can't get token for", username)
 
     #col1, col2 = st.columns(2)
     #with col1:
