@@ -98,36 +98,23 @@ with st.sidebar:
 #region
 
 if selected == 'Home':
-    from spotipy.oauth2 import SpotifyClientCredentials
-
-    if len(sys.argv) > 1:
-        username = sys.argv[1]
-    else:
-        username = st.text_input("Inserisci del testo qui")
-
-    client_credentials_manager = SpotifyClientCredentials()
-    sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-    sp.trace = True
-    user = sp.user(username)
-    st.write(user)
-    
-    #col1, col2 = st.columns(2)
-    #with col1:
-        #if not st.button("Log in to Spotify"):
+    col1, col2 = st.columns(2)
+    with col1:
+        if not st.button("Log in to Spotify"):
     #Non fare nulla se il bottone non viene cliccato
-           #pass
-        #else:
-            #client_id = os.environ['SPOTIPY_CLIENT_ID']
-            #client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
-            #scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
-            #sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
-    #with col2:
-        #if st.button("Log out to Spotify"):
+           pass
+        else:
+            client_id = os.environ['SPOTIPY_CLIENT_ID']
+            client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
+            scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
+            sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+    with col2:
+        if st.button("Log out to Spotify"):
         # Non fare nulla se il bottone non viene cliccato
-            #os.remove('.cache-your-spotify-username')
+            os.remove('.cache-your-spotify-username')
         # aggiungi eventuali altre operazioni di log
-        #else:
-            #pass
+        else:
+            pass
 #endregion
 
 
@@ -141,27 +128,27 @@ from spotipy.oauth2 import SpotifyOAuth
 
 # Everything is accessible via the st.secrets dict:
 
-#st.write("DB username:", st.secrets["SPOTIPY_CLIENT_ID"])
-#st.write("DB password:", st.secrets["SPOTIPY_CLIENT_SECRET"])
-#st.write("DB URI:", st.secrets["SPOTIPY_REDIRECT_URI"])
+st.write("DB username:", st.secrets["SPOTIPY_CLIENT_ID"])
+st.write("DB password:", st.secrets["SPOTIPY_CLIENT_SECRET"])
+st.write("DB URI:", st.secrets["SPOTIPY_REDIRECT_URI"])
 
 # And the root-level secrets are also accessible as environment variables:
 
-#import os
+import os
 
-#st.write(
-    #"Has environment variables been set:",
-    #os.environ["SPOTIPY_CLIENT_ID"] == st.secrets["SPOTIPY_CLIENT_ID"],
-#)
+st.write(
+    "Has environment variables been set:",
+    os.environ["SPOTIPY_CLIENT_ID"] == st.secrets["SPOTIPY_CLIENT_ID"],
+)
 
-#client_id = os.environ['SPOTIPY_CLIENT_ID']
-#client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
-#scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
-#sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
-#results = sp.current_user_saved_tracks()
-#for idx, item in enumerate(results['items']):
-    #track = item['track']
-    #print(idx, track['artists'][0]['name'], " – ", track['name'])
+client_id = os.environ['SPOTIPY_CLIENT_ID']
+client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
+scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
+results = sp.current_user_saved_tracks()
+for idx, item in enumerate(results['items']):
+    track = item['track']
+    print(idx, track['artists'][0]['name'], " – ", track['name'])
 #endregion
 ######################################################################################################
 
