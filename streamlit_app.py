@@ -111,7 +111,7 @@ if selected == 'Home':
     with col2:
         if st.button("Log out to Spotify"):
         # Non fare nulla se il bottone non viene cliccato
-            os.remove('.cache-your-spotify-username')
+            os.remove('.cache')
         # aggiungi eventuali altre operazioni di log
         else:
             pass
@@ -144,6 +144,7 @@ st.write(
 client_id = os.environ['SPOTIPY_CLIENT_ID']
 client_secret = os.environ['SPOTIPY_CLIENT_SECRET']
 scope = ['user-library-read','user-top-read','user-read-recently-played','user-library-read']
+scope = ['user-library-read']
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope=scope))
 results = sp.current_user_saved_tracks()
 for idx, item in enumerate(results['items']):
